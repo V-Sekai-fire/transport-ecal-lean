@@ -189,7 +189,7 @@ static int pw_write(void *buffer, size_t size) {
 	lean_dec(r);
 	return 0;
 }
-// Send `len` bytes that f writes in place. Returns eCAL's result (bytes sent, 0 when no one listens).
+// Send `len` bytes that f writes in place. Returns eCAL's result: 0 when sent, non-zero otherwise.
 LEAN_EXPORT lean_obj_res el_pub_send_with(b_lean_obj_arg o, uint64_t len, b_lean_obj_arg f, lean_obj_arg w) {
 	(void)w;
 	struct eCAL_PayloadWriter pw = {pw_write, pw_write, pw_size};

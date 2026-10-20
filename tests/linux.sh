@@ -4,7 +4,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
-podman run --rm -i -e N="${N:-2000}" -e FRAMES="${FRAMES:-60}" \
+podman run --rm -i --platform linux/arm64 -e N="${N:-2000}" -e FRAMES="${FRAMES:-60}" \
 	-v "$ROOT":/host:ro ubuntu:24.04 sh -eu <<'EOF'
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq >/dev/null
