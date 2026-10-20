@@ -32,8 +32,9 @@ instance : Nonempty Buf := BufP.property
 every subscriber has released the message (no drops); `buffers` is the memory file count. -/
 @[extern "el_pub_new"] opaque Publisher.new (topic : @& String) (zeroCopy : Bool) (ackMs buffers : UInt32) : IO Publisher
 @[extern "el_pub_subscribers"] opaque Publisher.subscribers (p : @& Publisher) : IO UInt64
+/-- Send a copy of `b`. Returns 0 when sent, non-zero otherwise. -/
 @[extern "el_pub_send"] opaque Publisher.send (p : @& Publisher) (b : @& ByteArray) : IO UInt32
-/-- Send `len` bytes that `f` writes in place. Returns eCAL's result (0: nobody received it). -/
+/-- Send `len` bytes that `f` writes in place. Returns eCAL's result: 0 when sent, non-zero otherwise. -/
 @[extern "el_pub_send_with"] opaque Publisher.sendWith (p : @& Publisher) (len : UInt64) (f : @& (View → IO Unit)) : IO UInt32
 
 @[extern "el_sub_new"] opaque Subscriber.new (topic : @& String) : IO Subscriber

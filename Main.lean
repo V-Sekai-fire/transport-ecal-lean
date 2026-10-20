@@ -89,7 +89,7 @@ def runPub (n : Nat) (skip corrupt : Option Nat) : IO UInt32 := do
       v.fill 16 (len - 16) (seedOf seq)
       v.setU64 8 (← v.fnv 16 (len - 16))
       if corrupt == some i then v.setU64 16 ((← v.getU64 16) ^^^ 1)
-    if r == 0 then return ← fail s!"pub: message {seq} reached no subscriber"
+    if r != 0 then return ← fail s!"pub: eCAL refused message {seq} ({r})"
   IO.println s!"OK pub {n} messages"
   stop
   return 0
@@ -126,7 +126,7 @@ def runFramePub (frames : Nat) : IO UInt32 := do
   for i in [0:frames] do
     src.setU64 0 i.toUInt64
     let r ← p.sendWith frameBytes fun v => v.copyFrom 0 src 0 frameBytes
-    if r == 0 then return ← fail s!"fpub: frame {i} reached no subscriber"
+    if r != 0 then return ← fail s!"fpub: eCAL refused frame {i} ({r})"
   IO.println s!"OK fpub {frames} frames, last frame fnv {← src.fnv}"
   stop
   return 0
